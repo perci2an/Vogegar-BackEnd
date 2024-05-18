@@ -16,12 +16,12 @@ app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 
 // 프론트앤드 개발 서버 실제 IP주소 작성
-app.use(
-  cors({
-    origin: "http://localhost:7000",
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: "http://localhost:7000",
+//     credentials: true,
+//   })
+// );
 
 app.use(
   session({

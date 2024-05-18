@@ -2,13 +2,8 @@ import User from "../models/User";
 import bcrypt from "bcrypt";
 
 export const postJoin = async (req, res) => {
-  const { name, username, email, password, password2, location } = req.body;
+  const { name, username, email, password, location } = req.body;
 
-  if (password !== password2) {
-    return res
-      .status(400)
-      .render({ message: "비밀번호 확인이 일치하지 않습니다." });
-  }
   const usernameExists = await User.exists({ username });
   if (usernameExists) {
     return res.status(400).render({ message: "이미 존재하는 닉네임입니다." });
@@ -19,14 +14,15 @@ export const postJoin = async (req, res) => {
   }
   try {
     await User.create({
-      name,
-      username,
       email,
+      username,
       password,
+      name,
       location,
     });
     return res.status(201).json({ message: "성공적으로 가입되었습니다." });
   } catch (error) {
+    console.log("왜 안돼");
     return res.status(400).json({ message: error._message });
   }
 };
