@@ -1,29 +1,21 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
 
-export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 export const postJoin = async (req, res) => {
   const { name, username, email, password, password2, location } = req.body;
-  const pageTitle = "Join";
+
   if (password !== password2) {
-    return res.status(400).render("join", {
-      pageTitle,
-      errorMessage: "Password confirmation does not match.",
-    });
+    return res
+      .status(400)
+      .render({ message: "비밀번호 확인이 일치하지 않습니다." });
   }
   const usernameExists = await User.exists({ username });
   if (usernameExists) {
-    return res.status(400).render("join", {
-      pageTitle,
-      errorMessage: "This username is already taken.",
-    });
+    return res.status(400).render({ message: "이미 존재하는 닉네임입니다." });
   }
   const emailExists = await User.exists({ email });
   if (emailExists) {
-    return res.status(400).render("join", {
-      pageTitle,
-      errorMessage: "This email is already taken.",
-    });
+    return res.status(400).render({ message: "이미 존재하는 이메일입니다." });
   }
   try {
     await User.create({
@@ -33,37 +25,26 @@ export const postJoin = async (req, res) => {
       password,
       location,
     });
-    return res.redirect("/login");
+    return res.status(201).json({ message: "성공적으로 가입되었습니다." });
   } catch (error) {
-    return res.status(400).render("join", {
-      pageTitle: "Upload Video",
-      errorMessage: error._message,
-    });
+    return res.status(400).json({ message: error._message });
   }
 };
-export const getLogin = (req, res) =>
-  res.render("login", { pageTitle: "Login" });
 
 export const postLogin = async (req, res) => {
   const { username, password } = req.body;
-  const pageTitle = "Login";
+
   const user = await User.findOne({ username });
   if (!user) {
-    return res.status(400).render("login", {
-      pageTitle,
-      errorMessage: "An account with this username does not exists.",
-    });
+    return res.status(400).json({ message: "존재하지 않는 닉네임입니다." });
   }
   const ok = await bcrypt.compare(password, user.password);
   if (!ok) {
-    return res.status(400).render("login", {
-      pageTitle,
-      errorMessage: "Wrong password",
-    });
+    return res.status(400).json({ message: "잘못된 비밀번호입니다." });
   }
   req.session.loggedIn = true;
   req.session.user = user;
-  return res.redirect("/");
+  return res.status(200).json({ message: "성공적으로 로그인되었습니다." });
 };
 
 export const startGithubLogin = (req, res) => {
@@ -78,7 +59,11 @@ export const startGithubLogin = (req, res) => {
   return res.redirect(finalUrl);
 };
 
-export const edit = (req, res) => res.sned("Edit User");
-export const remove = (req, res) => res.send("Remove User");
-export const logout = (req, res) => res.send("Logout");
-export const see = (req, res) => res.send("See user");
+export const edit = (req, res) =>
+  res.status(200).json({ message: "프로필 수정" });
+export const remove = (req, res) =>
+  res.status(200).json({ message: "프로필 삭제" });
+export const logout = (req, res) =>
+  res.status(200).json({ message: "로그아웃" });
+export const see = (req, res) =>
+  res.status(200).json({ message: "프로필 확인" });

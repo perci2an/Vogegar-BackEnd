@@ -3,6 +3,7 @@ import express from "express";
 import morgan from "morgan";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import cors from "cors";
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
@@ -10,11 +11,17 @@ import { localsMiddleware } from "./middleware";
 
 const app = express();
 const logger = morgan("dev");
-app.use(logger);
 
-app.set("view engine", "pug");
-app.set("views", process.cwd() + "/src/views");
+app.use(logger);
 app.use(express.urlencoded({ extended: true }));
+
+// 프론트앤드 개발 서버 실제 IP주소 작성
+app.use(
+  cors({
+    origin: "http://localhost:7000",
+    credentials: true,
+  })
+);
 
 app.use(
   session({
