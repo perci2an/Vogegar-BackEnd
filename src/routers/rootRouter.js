@@ -6,7 +6,7 @@ const rootRouter = express.Router();
 
 rootRouter.get("/", home);
 rootRouter.post("/join", postJoin);
-rootRouter.route("/login", postLogin);
+rootRouter.post("/login", postLogin);
 rootRouter.get("/search", search);
 
 export default rootRouter;

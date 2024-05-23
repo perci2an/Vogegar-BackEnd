@@ -42,6 +42,7 @@ app.use((req, res, next) => {
 });
 
 app.use(localsMiddleware);
+app.use(express.json());
 app.use("/", rootRouter);
 app.use("/user", userRouter);
 app.use("/video", videoRouter);

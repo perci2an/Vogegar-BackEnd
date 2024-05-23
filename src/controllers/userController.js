@@ -6,11 +6,11 @@ export const postJoin = async (req, res) => {
 
   const usernameExists = await User.exists({ username });
   if (usernameExists) {
-    return res.status(400).render({ message: "이미 존재하는 닉네임입니다." });
+    return res.status(400).json({ message: "이미 존재하는 닉네임입니다." });
   }
   const emailExists = await User.exists({ email });
   if (emailExists) {
-    return res.status(400).render({ message: "이미 존재하는 이메일입니다." });
+    return res.status(400).json({ message: "이미 존재하는 이메일입니다." });
   }
   try {
     await User.create({
@@ -22,7 +22,6 @@ export const postJoin = async (req, res) => {
     });
     return res.status(201).json({ message: "성공적으로 가입되었습니다." });
   } catch (error) {
-    console.log("왜 안돼");
     return res.status(400).json({ message: error._message });
   }
 };
