@@ -5,7 +5,7 @@ import {
   logout,
   see,
   startGithubLogin,
-} from "../controllers/userController";
+} from "../controllers/userController.js";
 
 const userRouter = express.Router();
 

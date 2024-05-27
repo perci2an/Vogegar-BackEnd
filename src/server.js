@@ -1,13 +1,13 @@
-import "./db";
+import "./db.js";
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import cors from "cors";
-import rootRouter from "./routers/rootRouter";
-import videoRouter from "./routers/videoRouter";
-import userRouter from "./routers/userRouter";
-import { localsMiddleware } from "./middleware";
+import rootRouter from "./routers/rootRouter.js";
+import videoRouter from "./routers/videoRouter.js";
+import userRouter from "./routers/userRouter.js";
+import { localsMiddleware } from "./middleware.js";
 
 const app = express();
 const logger = morgan("dev");

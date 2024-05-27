@@ -8,9 +8,11 @@ COPY package.json package-lock.json ./
 
 COPY src ./
 
-RUN npm ci
+RUN npm install
+
+RUN npm install --save-dev @babel/core @babel/node @babel/preset-env
 
 EXPOSE 7777
 
-ENTRYPOINT ["node", "server.js"]
+ENTRYPOINT ["npm", "run", "dev"]
 
